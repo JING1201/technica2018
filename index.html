@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Real-time HTML Editor</title>
+<title>InstaCard</title>
 <script type="text/javascript">
 
 var editboxHTML = 
 '<html class="expand close">' +
-'<head>' +
+'<head>' +                      
 '<style type="text/css">' +
-'.expand { width: 100%; height: 100%; }' +
-'.close { border: none; margin: 0px; padding: 0px; }' +
-'html,body { overflow: hidden; }' +
+'.expand { width: 90%; height: 98%; }' +
+'.close { margin: 0px; padding-right: 0px; }' +
+'html,body { overflow: hidden;}' +
 '<\/style>' +
 '<\/head>' +
-'<body class="expand close" onload="document.f.ta.focus(); document.f.ta.select();">' +
-'<form class="expand close" name="f">' +
-'<textarea class="expand close" style="background: #def;" name="ta" wrap="hard" spellcheck="false">' +
+'<body class="expand close" onload="document.f.ta.focus(); document.f.ta.select();" style = "border:solid #FFA6D2 ; border-width: 10px 10px 20px 10px;width:100%;">' +
+
+'<form class="expand close" name="f" style = "width: 100%; height: 100%; background-color: #FFA6D2;">' +
+'<textarea class="expand close" style="background: #C2FAFB; padding-left: 15px; width: 100%; height: 100%; border-radius:10px;" name="ta" wrap="hard" spellcheck="false">' +
 '<\/textarea>' +
 '<\/form>' +
+'<div >' +
+'<button type="button">Click Me!</button>' +
+'<\/div>' +
 '<\/body>' +
 '<\/html>';
 
-
 var defaultStuff = 'message = \"Happy Birthday Amy!\"\n'+
-'drawTextBox(text = message, size = \"6\", face = \"Comic Sans MS\")\n'+
+'drawTextBox(text = message, size = \"6\")\n'+
 'drawImage(src = \"https://ideas.staticsfly.com/ideas/wp-content/uploads/2016/08/50-happy-birthday-quotes-thumb.jpg\")\n'+
-'drawTextBox(text = \"You are amazing!\", size = \"4\", face = \"Verdana\")\n'+
-'setBackgroundColor(\'powderblue\')';
+'drawTextBox(text = \"You are amazing!\", size = \"4\")\n';
 
 var old = '';
 
@@ -85,45 +87,30 @@ function parse(code)
             var args = splits[i].substring(splits[i].indexOf('(')+1, splits[i].lastIndexOf(')')).split(",");
             for (var j=0; j < args.length;j++)
             {
-                if (args[j].startsWith("src"))
-                {
-                    if (!args[j].includes("\"")) //refers to a variable
-                    {
-                        var key = args[j].substring(args[j].indexOf('=')+1).trim();
-                        htmlResult += "src = "+variables[key];
-                    }
-                    else{
-                        htmlResult += args[j];
-                    }
-                }
-                else{
-                    htmlResult += args[j];
-                }
+                htmlResult += args[j];
             }
             htmlResult += ">";
             htmlResult += "<br>"
+            //console.log(arguments);
+            //console.log(htmlResult);
         }
+        /*
         else if (splits[i].startsWith('setBackgroundColor')){
             var styleElement = "background-color:";
-            var color = splits[i].substring(splits[i].indexOf('(')+2, splits[i].lastIndexOf(')')-1).trim();
-            styleElement += color;
-            var oldStyle = mainStyle.substring(mainStyle.indexOf("background-color:"),
-                    mainStyle.indexOf(";"));
-            if (!mainStyle.includes("background-color:"))
+            styleElement += splits[i].substring(splits[i].indexOf('(')+2, splits[i].lastIndexOf(')')-1).trim();
+            //console.log(styleElement);
+            if (!mainStyle.includes(styleElement))
             {
                 mainStyle += styleElement+";";
             }
-            else if (oldStyle != styleElement)
-            {
-                mainStyle = mainStyle.replace(oldStyle,styleElement);
-            }
-            //console.log(mainStyle);
-        }
+            console.log(mainStyle);
+        }*/
         else if (splits[i].includes('='))//variable assignment
         {
-            var equalPosition = splits[i].indexOf('=');
-            var keyName = splits[i].substring(0,equalPosition).trim();
-            var valueName = splits[i].substring(equalPosition+1).trim();
+            var parts = splits[i].split('=');
+            //console.log(parts);
+            var keyName = parts[0].trim();
+            var valueName = parts[1].trim();
             //remove extra double quotes for strings
             if (valueName.startsWith("\"")){
                 valueName = valueName.substring(1, valueName.length-1).trim();
@@ -150,7 +137,8 @@ function init()
 function update()
 {
   var textarea = window.editbox.document.f.ta;
-  var d = dynamicframe.document; 
+  var d = dynamicframe.document;
+
 
   if (old != textarea.value) {
     old = parse(textarea.value);
@@ -159,17 +147,19 @@ function update()
     d.close();
   }
 
-  window.setTimeout(update, 150);
+  //window.setTimeout(update, 150);
 }
 
 </script>
 </head>
 
-<frameset resizable="yes" rows="50%,*" onload="init();">
-    <!-- about:blank confuses opera, so use javascript: URLs instead -->
-    <frame name="editbox" src="javascript:'';">
-    <frame name="dynamicframe" src="javascript:'';">
+<frameset resizable="yes" cols="50%,*" onload="init();" frameborder = "0">
+  <!-- about:blank confuses opera, so use javascript: URLs instead -->
+  <frame name="editbox" src="javascript:'';" >
+  <frame name="dynamicframe" src="javascript:'';">
+
 </frameset>
+    
 
 
 </html>
