@@ -21,6 +21,7 @@ var editboxHTML =
 '<\/body>' +
 '<\/html>';
 
+
 var defaultStuff = 'message = \"Happy Birthday Amy!\"\n'+
 'drawTextBox(text = message, size = \"6\", face = \"Comic Sans MS\")\n'+
 'drawImage(src = \"https://ideas.staticsfly.com/ideas/wp-content/uploads/2016/08/50-happy-birthday-quotes-thumb.jpg\")\n'+
@@ -165,9 +166,10 @@ function update()
 </head>
 
 <frameset resizable="yes" rows="50%,*" onload="init();">
-  <!-- about:blank confuses opera, so use javascript: URLs instead -->
-  <frame name="editbox" src="javascript:'';">
-  <frame name="dynamicframe" src="javascript:'';">
+    <!-- about:blank confuses opera, so use javascript: URLs instead -->
+    <frame name="editbox" src="javascript:'';">
+    <frame name="dynamicframe" src="javascript:'';">
 </frameset>
+
 
 </html>
