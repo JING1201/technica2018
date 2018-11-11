@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Real-time HTML Editor</title>
+<title>InstaCard</title>
 <script type="text/javascript">
 
 var editboxHTML = 
 '<html class="expand close">' +
-'<head>' +                      
+'<head>' +                
 '<style type="text/css">' +
 '.expand { width: 90%; height: 98%; }' +
 '.close { margin: 0px; padding-right: 0px; }' +
@@ -14,16 +14,20 @@ var editboxHTML =
 '<\/style>' +
 '<\/head>' +
 '<body class="expand close" onload="document.f.ta.focus(); document.f.ta.select();" style = "border:solid #FFA6D2 ; border-width: 10px 10px 20px 10px;width:100%;">' +
-
 '<form class="expand close" name="f" style = "width: 100%; height: 100%; background-color: #FFA6D2;">' +
 '<textarea class="expand close" style="background: #C2FAFB; padding-left: 15px; width: 100%; height: 100%; border-radius:10px;" name="ta" wrap="hard" spellcheck="false">' +
 '<\/textarea>' +
-'<\/form>' +
-'<div >' +
-'<button type="button">Click Me!</button>' +
+'<div style = "background-color: #FFA6D2; ">' +
 '<\/div>' +
+'<\/form>' +
 '<\/body>' +
 '<\/html>';
+
+var documentationHTML = '<html class="expand close">' +
+'<p>This is a simple way to introduce people to how coding works! <\/p>' +
+'<p>In programming, there are variable assignments, such as message = "Happy Birthday Amy". You are assigning a value "Happy Birthday Amy" to the variable message, thus saving it for use at a later time. <\/p>'+
+ '<\/html>';
+
 
 
 var defaultStuff = 'message = \"Happy Birthday Amy!\"\n'+
@@ -141,6 +145,7 @@ function parse(code)
     htmlFinalResult += htmlResult;
     htmlFinalResult += "</center>";
     return htmlFinalResult;
+
 }
          
 function init()
@@ -148,6 +153,8 @@ function init()
   window.editbox.document.write(editboxHTML);
   window.editbox.document.close();
   window.editbox.document.f.ta.value = defaultStuff;
+  window.documentation.document.write(documentationHTML);
+  window.documentation.document.close();
   update();
 }
 
@@ -168,12 +175,12 @@ function update()
 
 </script>
 </head>
-
-<frameset resizable="yes" cols="50%,*" onload="init();" frameborder = "0">
+ <frameset resizable="yes" cols="50%,*" onload="init();" frameborder = "1">
+    <frameset resizable="yes" rows="50%,*"  frameborder = "1"> 
+        <frame name="editbox" src="javascript:'';">
+        <frame name ="documentation" src="javascript:'';">
+    </frameset>
+        <frame name="dynamicframe" src="javascript:'';">
     <!-- about:blank confuses opera, so use javascript: URLs instead -->
-    <frame name="editbox" src="javascript:'';">
-    <frame name="dynamicframe" src="javascript:'';">
 </frameset>
-
-
 </html>
