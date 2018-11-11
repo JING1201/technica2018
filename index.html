@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Real-time HTML Editor</title>
+<script type="text/javascript">
+
+var editboxHTML = 
+'<html class="expand close">' +
+'<head>' +
+'<style type="text/css">' +
+'.expand { width: 100%; height: 100%; }' +
+'.close { border: none; margin: 0px; padding: 0px; }' +
+'html,body { overflow: hidden; }' +
+'<\/style>' +
+'<\/head>' +
+'<body class="expand close" onload="document.f.ta.focus(); document.f.ta.select();">' +
+'<form class="expand close" name="f">' +
+'<textarea class="expand close" style="background: #def;" name="ta" wrap="hard" spellcheck="false">' +
+'<\/textarea>' +
+'<\/form>' +
+'<\/body>' +
+'<\/html>';
+
+var defaultStuff = 'message = \"Happy Birthday Amy!\"\n'+
+'drawTextBox(text = message, size = \"6\")\n'+
+'drawImage(src = \"https://ideas.staticsfly.com/ideas/wp-content/uploads/2016/08/50-happy-birthday-quotes-thumb.jpg\")\n'+
+'drawTextBox(text = \"You are amazing!\", size = \"4\")\n';
+
+var old = '';
+
+var variables = [];
+var mainStyle = "style = \"";
+
+function parse(code)
+{
+    var htmlFinalResult = "<center ";
+    var htmlResult = "";
+    var splits = code.split("\n");
+    for (var i = 0; i < splits.length; i++)
+    {
+        //console.log(splits[i]);
+        splits[i] = splits[i].trim();
+        if (splits[i]==="")
+        {
+            continue;
+        }
+        if (splits[i].startsWith('drawTextBox')){
+            htmlResult += "<font ";
+            var temp = "";
+            var flag = false;
+            var args = splits[i].substring(splits[i].indexOf('(')+1, splits[i].lastIndexOf(')')).split(",");
+            for (var j=0; j < args.length;j++)
+            {
+                if (args[j].startsWith("text"))
+                {
+                    if (!args[j].includes("\"")) //refers to a variable
+                    {
+                        var key = args[j].substring(args[j].indexOf('=')+1).trim();
+                        //console.log(key);
+                        temp = variables[key];
+                    }
+                    else{
+                        temp = args[j].substring(args[j].indexOf('\"')+1, args[j].lastIndexOf('\"'));
+                    }
+                }
+                else
+                {
+                    htmlResult += args[j];
+                    flag = true;
+                }
+            }
+            if (flag === false)
+            {
+                htmlResult += "size = \"3\"";
+            }
+            htmlResult += ">"
+            htmlResult += temp;
+            htmlResult += "</font>"
+            htmlResult += "<br>"
+        }
+        else if (splits[i].startsWith('drawImage')){
+            htmlResult += "<img ";
+            var args = splits[i].substring(splits[i].indexOf('(')+1, splits[i].lastIndexOf(')')).split(",");
+            for (var j=0; j < args.length;j++)
+            {
+                htmlResult += args[j];
+            }
+            htmlResult += ">";
+            htmlResult += "<br>"
+            //console.log(arguments);
+            //console.log(htmlResult);
+        }
+        /*
+        else if (splits[i].startsWith('setBackgroundColor')){
+            var styleElement = "background-color:";
+            styleElement += splits[i].substring(splits[i].indexOf('(')+2, splits[i].lastIndexOf(')')-1).trim();
+            //console.log(styleElement);
+            if (!mainStyle.includes(styleElement))
+            {
+                mainStyle += styleElement+";";
+            }
+            console.log(mainStyle);
+        }*/
+        else if (splits[i].includes('='))//variable assignment
+        {
+            var parts = splits[i].split('=');
+            //console.log(parts);
+            var keyName = parts[0].trim();
+            var valueName = parts[1].trim();
+            //remove extra double quotes for strings
+            if (valueName.startsWith("\"")){
+                valueName = valueName.substring(1, valueName.length-1).trim();
+            }
+            variables[keyName] = valueName;
+        }
+    }
+    //console.log(htmlResult);
+    htmlFinalResult += mainStyle+"\"";
+    htmlFinalResult += ">";
+    htmlFinalResult += htmlResult;
+    htmlFinalResult += "</center>";
+    return htmlFinalResult;
+}
+         
+function init()
+{
+  window.editbox.document.write(editboxHTML);
+  window.editbox.document.close();
+  window.editbox.document.f.ta.value = defaultStuff;
+  update();
+}
+
+function update()
+{
+  var textarea = window.editbox.document.f.ta;
+  var d = dynamicframe.document; 
+
+  if (old != textarea.value) {
+    old = parse(textarea.value);
+    d.open();
+    d.write(old);
+    d.close();
+  }
+
+  window.setTimeout(update, 150);
+}
+
+</script>
+</head>
+
+<frameset resizable="yes" rows="50%,*" onload="init();">
+  <!-- about:blank confuses opera, so use javascript: URLs instead -->
+  <frame name="editbox" src="javascript:'';">
+  <frame name="dynamicframe" src="javascript:'';">
+</frameset>
+
+</html>
