@@ -22,9 +22,10 @@ var editboxHTML =
 '<\/html>';
 
 var defaultStuff = 'message = \"Happy Birthday Amy!\"\n'+
-'drawTextBox(text = message, size = \"6\")\n'+
+'drawTextBox(text = message, size = \"6\", face = \"Comic Sans MS\")\n'+
 'drawImage(src = \"https://ideas.staticsfly.com/ideas/wp-content/uploads/2016/08/50-happy-birthday-quotes-thumb.jpg\")\n'+
-'drawTextBox(text = \"You are amazing!\", size = \"4\")\n';
+'drawTextBox(text = \"You are amazing!\", size = \"4\", face = \"Verdana\")\n'+
+'setBackgroundColor(\'powderblue\')';
 
 var old = '';
 
@@ -83,30 +84,45 @@ function parse(code)
             var args = splits[i].substring(splits[i].indexOf('(')+1, splits[i].lastIndexOf(')')).split(",");
             for (var j=0; j < args.length;j++)
             {
-                htmlResult += args[j];
+                if (args[j].startsWith("src"))
+                {
+                    if (!args[j].includes("\"")) //refers to a variable
+                    {
+                        var key = args[j].substring(args[j].indexOf('=')+1).trim();
+                        htmlResult += "src = "+variables[key];
+                    }
+                    else{
+                        htmlResult += args[j];
+                    }
+                }
+                else{
+                    htmlResult += args[j];
+                }
             }
             htmlResult += ">";
             htmlResult += "<br>"
-            //console.log(arguments);
-            //console.log(htmlResult);
         }
-        /*
         else if (splits[i].startsWith('setBackgroundColor')){
             var styleElement = "background-color:";
-            styleElement += splits[i].substring(splits[i].indexOf('(')+2, splits[i].lastIndexOf(')')-1).trim();
-            //console.log(styleElement);
-            if (!mainStyle.includes(styleElement))
+            var color = splits[i].substring(splits[i].indexOf('(')+2, splits[i].lastIndexOf(')')-1).trim();
+            styleElement += color;
+            var oldStyle = mainStyle.substring(mainStyle.indexOf("background-color:"),
+                    mainStyle.indexOf(";"));
+            if (!mainStyle.includes("background-color:"))
             {
                 mainStyle += styleElement+";";
             }
-            console.log(mainStyle);
-        }*/
+            else if (oldStyle != styleElement)
+            {
+                mainStyle = mainStyle.replace(oldStyle,styleElement);
+            }
+            //console.log(mainStyle);
+        }
         else if (splits[i].includes('='))//variable assignment
         {
-            var parts = splits[i].split('=');
-            //console.log(parts);
-            var keyName = parts[0].trim();
-            var valueName = parts[1].trim();
+            var equalPosition = splits[i].indexOf('=');
+            var keyName = splits[i].substring(0,equalPosition).trim();
+            var valueName = splits[i].substring(equalPosition+1).trim();
             //remove extra double quotes for strings
             if (valueName.startsWith("\"")){
                 valueName = valueName.substring(1, valueName.length-1).trim();
