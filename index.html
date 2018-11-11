@@ -12,10 +12,11 @@ var editboxHTML =
 '.close { margin: 0px; padding-right: 0px; }' +
 'html,body { overflow: hidden;}' +
 '<\/style>' +
+'<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">'+
 '<\/head>' +
 '<body class="expand close" onload="document.f.ta.focus(); document.f.ta.select();" style = "border:solid #FFA6D2 ; border-width: 10px 10px 20px 10px; width:108%;">' +
 '<form class="expand close" name="f" style = "width: 100%; height: 100%; background-color: #FFA6D2;">' +
-'<textarea class="expand close" style="background: #C2FAFB; padding-left: 15px; width: 100%; height: 100%; border-radius:10px;" name="ta" wrap="hard" spellcheck="false">' +
+'<textarea class="expand close" style="background: #C2FAFB; padding-left: 15px; width: 100%; height: 100%; border-radius:10px; font-size: 18px; font-family: \'Inconsolata\', monospace;" name="ta" wrap="hard" spellcheck="false">' +
 '<\/textarea>' +
 '<div style = "background-color: #FFA6D2; ">' +
 '<\/div>' +
@@ -24,16 +25,37 @@ var editboxHTML =
 '<\/html>';
 
 var documentationHTML = '<html class="expand close">' +
-'<p>This is a simple way to introduce people to how coding works! <\/p>' +
-'<p>In programming, there are variable assignments, such as message = "Happy Birthday Amy". You are assigning a value "Happy Birthday Amy" to the variable message, thus saving it for use at a later time. <\/p>'+
- '<\/html>';
+'<head>'+
+'<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">'+
+'<\/head>'+
+'<font style = "font-family: \'Roboto Condensed\', san-serif;">'+
+'<h1>A Simple Guide to InstaCard<\/h1>' +
+'<h2>Introduction to Programming<\/h2>'+
+'<p><b>Variable Assignments:<\/b><\/p>'+
+'<p>In <i>message = "Happy Birthday Amy"</i>, you are assigning the value <i>"Happy Birthday Amy"<\/i> to the variable <i>message</i>, thus saving it for use at a later time. <\/p>'+
+'<p>For example, <i>drawTextBox(text = message, size = "6")<\/i> uses the variable <i>message<\/i> as the text to display. Notice that <i>message<\/i> is much shorter than <i>"Happy Birthday Amy!"</i> and therfore simpler to write when you want to type the same message.<\/p>' +
+'<p><b>Function Calling:<\/b><\/p>'+
+'<p>For now, you can think of a function as an instruction to the computer. <\/p>'+
+'<p>For example, <i>setBackgroundColor(\'powderblue\')<\/i> tells the browser to set the background color of the card as powderblue. Notice that <i>\'powderblue\'<\/i> goes between a pair of parentheses. It is called a parameter or argument to the function <i>setBackgroundColor<\/i>.<\/p>'+
+'<p>Notice that other functions such as <i>drawTextBox()<\/i> has more than one parameter.<\/p>'+
+'<h2>Try it yourself!<\/h2>'+
+'<p> Now that you have a basic idea of programming, feel free to change or add any variables or call functions to create more textboxes.(Don\'t forget to put quotes around anything that is not a variable or a function! Refer to the example if you need help.)<\/p>'+
+'<p> What you changed will be instantly reflected on the display to the right. <\/p>'+
+'<p> Here is the list of function that you can call and their details: <\/p>'+
+'<p> <i>Note that parameters italicized are optional :)<\/i><\/p>'+
+'<ul>'+
+'<li>setBackgroundColor([color name])<\/li>'+
+'<li>drawTextBox(text = [text to display], <i>size = [number from 1 to 7]<\/i>, <i>face = [font name]<\/i>, <i>color = [text color]<\/i>)<\/li>'+
+'<li>drawImage(src = [link to the image])<\/li>'+
+'<\/ul>'+
+'<\/html>';
 
 
 
-var defaultStuff = 'message = \"Happy Birthday Amy!\"\n'+
-'drawTextBox(text = message, size = \"6\", face = \"Comic Sans MS\")\n'+
-'drawImage(src = \"https://ideas.staticsfly.com/ideas/wp-content/uploads/2016/08/50-happy-birthday-quotes-thumb.jpg\")\n'+
-'drawTextBox(text = \"You are amazing!\", size = \"4\", face = \"Verdana\")\n'+
+var defaultStuff = 'message = \"Happy Birthday Amy!\"\n\n'+
+'drawTextBox(text = message, size = \"6\", face = \"Comic Sans MS\")\n\n'+
+'drawImage(src = \"https://ideas.staticsfly.com/ideas/wp-content/uploads/2016/08/50-happy-birthday-quotes-thumb.jpg\")\n\n'+
+'drawTextBox(text = \"You are amazing!\", size = \"4\", face = \"Verdana\", color = "Navy")\n\n'+
 'setBackgroundColor(\'powderblue\')';
 
 var old = '';
